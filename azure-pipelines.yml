@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  testDllPath: '$(System.DefaultWorkingDirectory)\bin\Any CPU\Release\net6.0\DemoTestAutomation.dll'
+  testDllPath: '$(System.DefaultWorkingDirectory)\bin\Any CPU\Release\net6.0\DemoTestAutomationAPI.dll'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -22,7 +22,7 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    restoreSolution: '$(System.DefaultWorkingDirectory)/DemoTestAutomation.csproj'
+    restoreSolution: '$(System.DefaultWorkingDirectory)/DemoTestAutomationAPI.csproj'
   displayName: 'Restore NuGet packages'
 - task: FileTransform@1
   inputs:
@@ -40,7 +40,7 @@ steps:
 
 - task: VSBuild@1
   inputs:
-    solution: '$(System.DefaultWorkingDirectory)/DemoTestAutomation.csproj'
+    solution: '$(System.DefaultWorkingDirectory)/DemoTestAutomationAPI.csproj'
     platform: 'Any CPU'
     configuration: '$(buildConfiguration)'
   displayName: 'Build project'
