@@ -24,6 +24,19 @@ steps:
   inputs:
     restoreSolution: '$(System.DefaultWorkingDirectory)/DemoTestAutomation.csproj'
   displayName: 'Restore NuGet packages'
+- task: FileTransform@1
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)'
+    fileType: 'xml'
+    targetFiles: '$(System.DefaultWorkingDirectory)/App.config'
+    xmlTransformationRules: |
+      <?xml version="1.0" encoding="utf-8"?>
+      <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+        <appSettings>
+          <add key="Browser" value="$(Browser)" xdt:Transform="Replace" xdt:Locator="Match(key)"/>
+          <add key="baseUrl" value="$(BaseUrl)" xdt:Transform="Replace" xdt:Locator="Match(key)"/>
+        </appSettings>
+      </configuration>
 
 - task: VSBuild@1
   inputs:
