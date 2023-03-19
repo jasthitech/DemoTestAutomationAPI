@@ -1,0 +1,42 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+ name: Default
+ vmImage: 'LAPTOP-VQ16APIQ'
+
+variables:
+  buildConfiguration: 'Release'
+  testDllPath: '$(System.DefaultWorkingDirectory)\bin\Any CPU\Release\net6.0\DemoTestAutomation.dll'
+
+steps:
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '5.11.0'
+  displayName: 'Install NuGet'
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(System.DefaultWorkingDirectory)/DemoTestAutomation.csproj'
+  displayName: 'Restore NuGet packages'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(System.DefaultWorkingDirectory)/DemoTestAutomation.csproj'
+    platform: 'Any CPU'
+    configuration: '$(buildConfiguration)'
+  displayName: 'Build project'
+
+- task: VSTest@2
+  inputs:
+    testAssemblyVer2: |
+      $(testDllPath)
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    platform: 'Any CPU'
+    configuration: '$(buildConfiguration)'
+  displayName: 'Run tests'
